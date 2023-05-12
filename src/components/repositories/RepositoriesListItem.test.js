@@ -2,11 +2,11 @@ import { screen, render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import RepositoriesListItem from './RepositoriesListItem';
 
-jest.mock('../tree/FileIcon', () => {
-  return () => {
-    return 'File Icon Component'
-  }
-})
+// jest.mock('../tree/FileIcon', () => {
+//   return () => {
+//     return 'File Icon Component'
+//   }
+// })
 
 
 function renderComponent() {
@@ -16,25 +16,21 @@ function renderComponent() {
     description: 'A js library',
     owner: 'facebook',
     name: 'react',
-    html_url: 'https://github.com/facebook/react'
+    html_url: '/repositories/facebook/react'
   }
   render(
     <MemoryRouter>
       <RepositoriesListItem repository={repository} />
     </MemoryRouter>
   );
+
+  return { repository };
 }
 
 test('shows a link to the github homepage for this repository', async () => {
-  renderComponent();
+  const { repository } = renderComponent();
 
-  // await screen.findByRole('img', { name: 'Javascript' });
+  await screen.findByRole('img', { name: 'Javascript' });
+  const link = screen.getByRole('link');
+  expect(link).toHaveAttribute('href', repository.html_url);
 });
-
-const pause = () => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve();
-    }, 1000);
-  });
-}
