@@ -1,6 +1,7 @@
 import { screen, render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import RepositoriesListItem from './RepositoriesListItem';
+import { async } from 'validate.js';
 
 function renderComponent() {
   const repository = {
@@ -18,7 +19,16 @@ function renderComponent() {
   );
 }
 
-test('shows a link to the github homepage for this repository', () => {
+test('shows a link to the github homepage for this repository', async () => {
   renderComponent();
 
-})
+  await screen.findByRole('img', { name: 'Javascript' });
+});
+
+const pause = () => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve();
+    }, 1000);
+  });
+}
