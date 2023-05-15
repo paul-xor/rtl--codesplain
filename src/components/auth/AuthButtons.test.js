@@ -2,11 +2,14 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { createServer } from '../../test/server';
 import AuthButtons from './AuthButtons';
+import { SWRConfig } from 'swr'
 
 async function renderComponent() {
   render(
     <MemoryRouter>
-      <AuthButtons />
+      <SWRConfig value={{ provider: () => new Map() }}>
+        <AuthButtons />
+      </SWRConfig>
     </MemoryRouter>
   )
   await screen.findAllByRole('link');
@@ -51,7 +54,7 @@ describe('when user is not sign in', () => {
   })
 })
 
-describe.only('when user is sign in', () => {
+describe('when user is sign in', () => {
   // createServer() ==> GET 'api/user ==> { user: { id: 3, email: some@email.com }}
   createServer([
     {
